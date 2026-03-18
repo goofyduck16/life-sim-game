@@ -2,7 +2,7 @@
 /**
  * Preference file version 110624
  * 
- * @author: JaneElliot
+ * @author: JaneElliot and joc
  *          VHS Learning
  */
 import java.util.Scanner;
