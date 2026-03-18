@@ -15,7 +15,7 @@ public class Player
   private Job job;
   private ClassSchedule classSchedule;
   private Grades grades;
-  private String familyInfo;
+  private FamilyInfo familyInfo;
   private double weeklyExpenses;
   private double hoursOfSleep;
   private String name;
@@ -23,7 +23,8 @@ public class Player
   // Player constructor
   public Player(int year, double moneySaved, double weeklyIncome,
     double timeAvail, Job job, ClassSchedule classSchedule, Grades grades,
-    String familyInfo, double weeklyExpenses, double hoursOfSleep, String name)
+    FamilyInfo familyInfo, double weeklyExpenses, double hoursOfSleep,
+    String name)
   {
     this.year = year;
     this.moneySaved = moneySaved;
