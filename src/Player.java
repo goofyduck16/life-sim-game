@@ -67,7 +67,7 @@ public class Player
     return moneySaved;
   }
 
-  public void moneySaved(double moneySaved)
+  public void setMoneySaved(double moneySaved)
   {
     this.moneySaved = moneySaved;
   }

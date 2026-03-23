@@ -54,6 +54,8 @@ public class Runner
     scan.next();
     Player player =
       new Player(14, 300, 0, 112, null, null, null, null, 0, 8, characterName);
+    FirstYear.run(player);
+
     scan.close();
   }
 
