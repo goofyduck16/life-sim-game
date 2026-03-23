@@ -3,7 +3,7 @@
  * Preference file version 110624
  * 
  * @author: JaneElliot and joc
- *          VHS Learning
+ * 
  */
 import java.util.Scanner;
 

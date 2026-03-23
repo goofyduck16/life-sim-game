@@ -61,58 +61,68 @@ public class Player
   }
 
   // moneySaved
-  public double moneySaved()
+  public double getMoneySaved()
   {
     return moneySaved;
   }
 
-  public void moneySaved(double moneySaved)
+  public void setMoneySaved(double moneySaved)
   {
     this.moneySaved = moneySaved;
   }
 
   // weeklyIncome
-  public double weeklyIncome()
+  public double getWeeklyIncome()
   {
     return moneySaved;
   }
 
-  public void weeklyIncome(double weeklyIncome)
+  public void setWeeklyIncome(double weeklyIncome)
   {
     this.weeklyIncome = weeklyIncome;
   }
 
   // timeAvail
-  public double timeAvail()
+  public double getTimeAvail()
   {
     return timeAvail;
   }
 
-  public void timeAvail(double timeAvail)
+  public void setTimeAvail(double timeAvail)
   {
     this.timeAvail = timeAvail;
   }
 
   // job
-  public Job job()
+  public Job getJob()
   {
     return job;
   }
 
-  public void job(Job job)
+  public void setJob(Job job)
   {
     this.job = job;
   }
 
   // classSchedule
-  public ClassSchedule classSchedule()
+  public ClassSchedule getClassSchedule()
   {
     return classSchedule;
   }
 
-  public void classSchedule(ClassSchedule classSchedule)
+  public void setClassSchedule(ClassSchedule classSchedule)
   {
     this.classSchedule = classSchedule;
+  }
+
+  public ClassFamilyInfo getFamilyInfo()
+  {
+    return classFamilyInfo;
+  }
+
+  public void setFamilyInfo(ClassFamilyInfo classFamilyInfo)
+  {
+    this.familyInfo = familyInfo;
   }
 
 }
