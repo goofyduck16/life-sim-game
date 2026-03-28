@@ -9,14 +9,14 @@ import java.util.Scanner;
 
 public class FirstYear
 {
-  public static void run(Player p)
+  public static void run(Player player)
   {
     Scanner scan = new Scanner(System.in);
 
-    Typer.print("Year one has now begun...");
+    Typer.print("\nYear one-\n");
     actionPrompt();
     String choice = scan.next();
-    moveToCorrectClass(choice);
+    moveToCorrectClass(choice, player);
 
     scan.close();
   }
@@ -30,40 +30,69 @@ public class FirstYear
     Typer.print("Access Extracurriculars-(d)");
     Typer.print("Access Finicials-(e)");
     Typer.print("Access Game Information-(f)");
+    Typer.print("Access Summer Job-(g)");
+    Typer.print("End year-(h)");
 
   }
 
-  public static void moveToCorrectClass(String letter)
+  public static void moveToCorrectClass(String letter, Player player)
   {
     if (letter.equals("a") || letter.equals("A"))
     {
-      FamilyInfo.runOption();
+      FamilyInfo.runOption(player);
     }
-    else if (letter.equals("b") || letter.equals("B"))
-    {
-      Player.runOption();
-    }
-    else if (letter.equals("c") || letter.equals("C"))
-    {
-      School.runOption();
-    }
-    else if (letter.equals("d") || letter.equals("D"))
-    {
-      Extracurriculars.runOption();
-    }
-    else if (letter.equals("e") || letter.equals("E"))
-    {
-      Finicials.runOption();
-    }
-    else if (letter.equals("f") || letter.equals("F"))
-    {
-      GameOverview.runOption();
-    }
-    else
-    {
-      Typer.print("I did not understand that command. Please try again:\n");
-      actionPrompt();
-    }
+    // else if (letter.equals("b") || letter.equals("B"))
+    // {
+    // Player.runOption(player);
+    // }
+    // else if (letter.equals("c") || letter.equals("C"))
+    // {
+    // School.runOption(player);
+    // }
+    // else if (letter.equals("d") || letter.equals("D"))
+    // {
+    // Extracurriculars.runOption(player);
+    // }
+    // else if (letter.equals("e") || letter.equals("E"))
+    // {
+    // Finicials.runOption(player);
+    // }
+    // else if (letter.equals("f") || letter.equals("F"))
+    // {
+    // GameOverview.runOption(player);
+    // }
+    // else if (letter.equals("g") || letter.equals("G"))
+    // {
+    // SummerJob.runOption(player);
+    // }
+    // else if (letter.equals("g") || letter.equals("G"))
+    // {
+    // if (finishYearCheck())
+    // {
+    // finishYear();
+    // }
+    // else
+    // {
+    // Typer
+    // .print("Some items have not been filled out. Please ensure you have
+    // completed all requirements for the year.");
+    // }
+    // }
+    // else
+    // {
+    // Typer.print("I did not understand that command. Please try again:\n");
+    // actionPrompt();
+    // }
+    //
+  }
+
+  public static boolean finishYearCheck()
+  {
+    return false;
+  }
+
+  public static void finishYear()
+  {
 
   }
 }

@@ -53,9 +53,10 @@ public class Runner
       + " to be earning $90,000 dollars annually by age thirty. Good luck! Press enter to continue:");
 
     scan.nextLine();
-    Player player =
+
+    Player playerX =
       new Player(14, 300, 0, 112, null, null, null, null, 0, 8, characterName);
-    FirstYear.run(player);
+    FirstYear.run(playerX);
 
     scan.close();
   }

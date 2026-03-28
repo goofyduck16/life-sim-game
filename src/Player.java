@@ -1,8 +1,10 @@
+
 /**
  * Preference file version 110624
  * 
  * @author: JaneElliot
  */
+import java.util.Scanner;
 
 public class Player
 {
@@ -121,9 +123,49 @@ public class Player
     return familyInfo;
   }
 
-  public void setFamilyInfo(FamilyInfo FamilyInfo)
+  public void setFamilyInfo(FamilyInfo familyInfo)
   {
     this.familyInfo = familyInfo;
+  }
+
+  public static void runOption(Player player)
+  {
+    String name = player.getName();
+
+    Scanner scan = new Scanner(System.in);
+    Typer.print("What would you like to see in Player Info?");
+    Typer.print("Profile - (a)");
+    Typer.print("Weekly Income - (b)");
+    Typer.print("Time Available - (c)");
+    Typer.print("Weekly Income - (b)");
+
+    Typer.print("Return to Actions - (c)");
+
+    String letter = scan.next();
+    scan.nextLine();
+    if (letter.equals("a") || letter.equals("A"))
+    {
+      scan.nextLine();
+      runOption(player);
+
+    }
+    else if (letter.equals("b") || letter.equals("B"))
+    {
+      scan.nextLine();
+      runOption(player);
+    }
+    else if (letter.equals("c") || letter.equals("C"))
+    {
+      FirstYear.run(player);
+    }
+    else
+    {
+      Typer.print("I am sorry I did not understand that. Please try again.");
+      runOption(player);
+    }
+
+    scan.close();
+
   }
 
 }
