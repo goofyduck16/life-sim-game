@@ -51,7 +51,8 @@ public class Runner
       + "'s life from age 14 to 30. The objective of the game is to get "
       + characterName
       + " to be earning $90,000 dollars annually by age thirty. Good luck! Press enter to continue:");
-    scan.next();
+
+    scan.nextLine();
     Player player =
       new Player(14, 300, 0, 112, null, null, null, null, 0, 8, characterName);
     FirstYear.run(player);
