@@ -41,10 +41,10 @@ public class FirstYear
     {
       FamilyInfo.runOption(player);
     }
-    // else if (letter.equals("b") || letter.equals("B"))
-    // {
-    // Player.runOption(player);
-    // }
+    else if (letter.equals("b") || letter.equals("B"))
+    {
+      Player.runOption(player);
+    }
     // else if (letter.equals("c") || letter.equals("C"))
     // {
     // School.runOption(player);
@@ -78,12 +78,12 @@ public class FirstYear
     // completed all requirements for the year.");
     // }
     // }
-    // else
-    // {
-    // Typer.print("I did not understand that command. Please try again:\n");
-    // actionPrompt();
-    // }
-    //
+    else
+    {
+      Typer.print("I did not understand that command. Please try again:\n");
+      actionPrompt();
+    }
+
   }
 
   public static boolean finishYearCheck()
