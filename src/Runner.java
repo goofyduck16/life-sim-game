@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Runner
 {
+  public static int yearInRunner = 1;
 
   public static void main(String[] args)
   {
@@ -43,7 +44,7 @@ public class Runner
       + " lives in a five bedroom rented house with his siblings, parents, and grandmother."
       + " His mom is a cashier at a Fry's Marketplace, earning $35,000 annually. "
       + "His father works as a dishwasher at local resturants and earns $30,000 "
-      + "annually. Each year their family spends $62880 on nessecary expenses. You"
+      + "annually. Each year their family spends $62,880 on nessecary expenses. You"
       + " will be able to inspect costs closer later on. " + characterName
       + " is provided $300 dollars annually by his parents to spend on academics, "
       + "athletic fees, and any other extracurrcular expenses.\n");
@@ -56,7 +57,8 @@ public class Runner
     scan.nextLine();
 
     Player playerX =
-      new Player(14, 300, 0, 112, null, null, null, 0, 8, characterName);
+      new Player(14, 300, 0, 112, null, new ClassSchedule(), null, 0, 8,
+                 characterName);
     FirstYear.run(playerX);
 
     scan.close();

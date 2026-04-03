@@ -5,6 +5,7 @@
  * @author: JaneElliot
  */
 import java.util.Scanner;
+import java.util.*;
 
 public class Player
 {
@@ -20,6 +21,8 @@ public class Player
   private double hoursOfSleep;
   private String name;
   private int age;
+  private ArrayList<HighSchoolClass> completedClasses =
+    new ArrayList<HighSchoolClass>();
 
   // Player constructor
   public Player(int age, double moneySaved, double weeklyIncome,
@@ -75,7 +78,7 @@ public class Player
   // weeklyIncome
   public double getWeeklyIncome()
   {
-    return moneySaved;
+    return weeklyIncome;
   }
 
   public void setWeeklyIncome(double weeklyIncome)
@@ -146,15 +149,42 @@ public class Player
     grades = newGrade;
   }
 
+  public ArrayList<HighSchoolClass> getCompletedClasses()
+  {
+    return completedClasses;
+  }
+
+  // call this at the end of each school year to add the classes they finished
+  public void addCompletedClass(HighSchoolClass c)
+  {
+    completedClasses.add(c);
+  }
+
+  // useful for displaying their transcript
+  public void printCompletedClasses()
+  {
+    if (completedClasses.isEmpty())
+    {
+      Typer.print("No completed classes yet.");
+      return;
+    }
+    Typer.print("\n--- COMPLETED CLASSES ---");
+    for (HighSchoolClass c : completedClasses)
+    {
+      Typer.print(c.getName() + " | Grade: " + c.getLetterGrade() + " ("
+        + c.getNumericalGrade() + ")" + " | Credits: " + c.getCredits()
+        + " | Subject: " + c.getType());
+    }
+  }
+
   public static void runOption(Player player)
   {
     String name = player.getName();
 
     Scanner scan = new Scanner(System.in);
-    Typer.print("What would you like to view in Player Info?");
+    Typer.print("What would you like to view in Player Stats?");
     Typer.print("Profile - (a)");
-    Typer.print("Time Available - (b)");
-    Typer.print("Return to Actions - (c)");
+    Typer.print("Return to Actions - (b)");
 
     String letter = scan.next();
     scan.nextLine();
@@ -169,13 +199,60 @@ public class Player
       double weeklyExpenses = player.getWeeklyExpenses();
       double hoursOfSleep = player.getHoursOfSleep();
 
-    }
-    else if (letter.equals("b") || letter.equals("B"))
-    {
+      Typer.print("\n=============================");
+      Typer.print("       PLAYER STATS");
+      Typer.print("=============================\n");
+
+      // Basic Info
+      Typer.print("--- BASIC INFO ---");
+      Typer.print("Name:                " + name);
+      Typer.print("Age:                 " + age + " years old\n");
+
+      // Finances
+      Typer.print("--- FINANCES ---");
+      Typer.print("Money Saved:         $" + String.format("%.2f", moneySaved));
+      Typer
+        .print("Weekly Income:       $" + String.format("%.2f", weeklyIncome));
+      Typer.print("Weekly Expenses:     $"
+        + String.format("%.2f", weeklyExpenses));
+      Typer.print("Weekly Net:          $"
+        + String.format("%.2f", weeklyIncome - weeklyExpenses) + "\n");
+
+      // Job
+      Typer.print("--- EMPLOYMENT ---");
+      if (job == null)
+      {
+        Typer.print("Job:                 Unemployed\n");
+      }
+      else
+      {
+        Typer.print("Job:                 " + job.toString() + "\n");
+      }
+
+      // Academics
+      Typer.print("--- ACADEMICS ---");
+      if (grades == null)
+      {
+        Typer.print("Grades:              No grades yet\n");
+      }
+      else
+      {
+        Typer.print("Grades:              " + grades.toString() + "\n");
+      }
+
+      // Lifestyle
+      Typer.print("--- LIFESTYLE ---");
+      Typer.print("Hours of Sleep:      " + hoursOfSleep + " hrs/night");
+      Typer.print("Free Time:           " + timeAvail + " hrs/week\n");
+
+      Typer.print("=============================");
+      Typer.print("Press enter to return:");
       scan.nextLine();
       runOption(player);
+
     }
-    else if (letter.equals("e") || letter.equals("E"))
+
+    else if (letter.equals("b") || letter.equals("B"))
     {
       FirstYear.run(player);
     }

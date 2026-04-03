@@ -45,10 +45,10 @@ public class FirstYear
     {
       Player.runOption(player);
     }
-    // else if (letter.equals("c") || letter.equals("C"))
-    // {
-    // School.runOption(player);
-    // }
+    else if (letter.equals("c") || letter.equals("C"))
+    {
+      School.runOption(player);
+    }
     // else if (letter.equals("d") || letter.equals("D"))
     // {
     // Extracurriculars.runOption(player);
@@ -81,7 +81,7 @@ public class FirstYear
     else
     {
       Typer.print("I did not understand that command. Please try again:\n");
-      actionPrompt();
+      run(player);
     }
 
   }

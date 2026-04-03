@@ -14,6 +14,7 @@ public class Typer
     String[] words = text.split(" ");
     int lineLength = 0;
     int maxLineLength = 60;
+    int milliseconds = 0;
 
     for (String word : words)
     {
@@ -30,7 +31,7 @@ public class Typer
         System.out.print(c);
         try
         {
-          Thread.sleep(35); // milliseconds per character
+          Thread.sleep(milliseconds); // milliseconds per character
         }
         catch (InterruptedException e)
         {
