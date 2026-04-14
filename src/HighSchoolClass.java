@@ -146,4 +146,89 @@ public class HighSchoolClass
     return false;
   }
 
+  public void calculateGrade()
+  {
+    Random rand = new Random();
+
+    // base effort ratio - how many hours recommended vs how many they put in
+    // a difficulty 5 class with classTime 5 should need about 2-3 hrs homework
+    double recommendedHours = (difficultyLevel / 10.0) * classTime;
+    double effortRatio = homeworkWeeklyHours / recommendedHours;
+
+    // cap effort ratio so putting in way more hours doesnt guarantee 100
+    if (effortRatio > 1.5)
+      effortRatio = 1.5;
+
+    // roll a random number 1-100
+    int roll = rand.nextInt(100) + 1;
+
+    // grade thresholds shift based on effort ratio
+    // at full effort (1.0+): A=70%, B=20%, C=7%, D=3%
+    // at half effort (0.5): A=20%, B=35%, C=30%, D=15%
+    // at no effort (0.0): A=5%, B=15%, C=40%, D=40%
+
+    int aThreshold = (int) (effortRatio * 70);
+    int bThreshold = aThreshold + (int) (20 + (1 - effortRatio) * 15);
+    int cThreshold = bThreshold + (int) (7 + (1 - effortRatio) * 23);
+
+    // cap thresholds
+    if (aThreshold > 90)
+      aThreshold = 90;
+    if (bThreshold > 97)
+      bThreshold = 97;
+    if (cThreshold > 99)
+      cThreshold = 99;
+
+    // assign numerical grade based on roll
+    if (roll <= aThreshold)
+    {
+      // A range: 90-100
+      numericalGrade = 90 + rand.nextInt(11);
+    }
+    else if (roll <= bThreshold)
+    {
+      // B range: 80-89
+      numericalGrade = 80 + rand.nextInt(10);
+    }
+    else if (roll <= cThreshold)
+    {
+      // C range: 70-79
+      numericalGrade = 70 + rand.nextInt(10);
+    }
+    else
+    {
+      // D range: 60-69
+      numericalGrade = 60 + rand.nextInt(10);
+    }
+
+    // now set letter grade
+    letterGrade = calculateLetterGrade(numericalGrade);
+  }
+
+  private String calculateLetterGrade(int numericalGrade)
+  {
+    if (numericalGrade >= 93)
+      return "A+";
+    else if (numericalGrade >= 90)
+      return "A";
+    else if (numericalGrade >= 87)
+      return "B+";
+    else if (numericalGrade >= 83)
+      return "B";
+    else if (numericalGrade >= 80)
+      return "B-";
+    else if (numericalGrade >= 77)
+      return "C+";
+    else if (numericalGrade >= 73)
+      return "C";
+    else if (numericalGrade >= 70)
+      return "C-";
+    else if (numericalGrade >= 67)
+      return "D+";
+    else if (numericalGrade >= 63)
+      return "D";
+    else
+      return "D-";
+  }
+
 }

@@ -91,8 +91,20 @@ public class FirstYear
     return false;
   }
 
-  public static void finishYear()
+  public static void finishYear(Player player)
   {
+    // calculate grades based on homework hours set during the year
+    player.getClassSchedule().calculateAllGrades();
+    player.getClassSchedule().printGradeReport();
 
+    // move completed classes to player transcript
+    for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
+    {
+      player.addCompletedClass(c);
+    }
+
+    // clear schedule for next year
+    player.getClassSchedule().getCurrentSchedule().clear();
   }
+
 }

@@ -131,4 +131,122 @@ public class ClassSchedule
     }
     printCreditSummary();
   }
+
+  public void setHomeworkHours(Scanner scan)
+  {
+    if (currentSchedule.isEmpty())
+    {
+      Typer.print("Your schedule is empty.");
+      return;
+    }
+
+    // calculate how many free hours the player has
+    // assuming a 168 hr week: sleep(56) + school hours + meals/hygiene(21)
+    int freeHours = 168 - 56 - 21 - getTotalHours();
+
+    Typer.print("\n--- SET HOMEWORK HOURS ---");
+    Typer
+      .print("You have approximately " + freeHours + " free hours per week.");
+    Typer.print("Distribute your study time wisely across your classes.\n");
+
+    int hoursAssigned = 0;
+
+    for (HighSchoolClass c : currentSchedule)
+    {
+      int hoursLeft = freeHours - hoursAssigned;
+      Typer.print("Class: " + c.getName() + " | Difficulty: "
+        + c.getDifficultyLevel() + "/10" + " | Class hours/week: "
+        + c.getClassTime());
+      Typer.print("Recommended homework: "
+        + String.format("%.1f",
+                        (c.getDifficultyLevel() / 10.0) * c.getClassTime())
+        + " hrs/week");
+      Typer.print("Hours remaining to assign: " + hoursLeft);
+      Typer
+        .print("How many hours per week do you want to study for this class? (0-"
+          + hoursLeft + "):");
+
+      int hours = -1;
+      while (hours < 0 || hours > hoursLeft)
+      {
+        try
+        {
+          hours = scan.nextInt();
+          if (hours < 0 || hours > hoursLeft)
+            Typer
+              .print("Please enter a number between 0 and " + hoursLeft + ":");
+        }
+        catch (Exception e)
+        {
+          Typer.print("Please enter a valid number:");
+          scan.nextLine();
+        }
+      }
+      scan.nextLine();
+
+      c.setHomeworkWeeklyHours(hours);
+      hoursAssigned += hours;
+      Typer.print("Set " + hours + " hrs/week for " + c.getName() + "\n");
+    }
+
+    Typer.print("Total homework hours assigned: " + hoursAssigned + "/"
+      + freeHours);
+    Typer.print("Unassigned free hours: " + (freeHours - hoursAssigned)
+      + " (used for rest, extracurriculars, eating, etc)");
+  }
+
+  public void calculateAllGrades()
+  {
+    for (HighSchoolClass c : currentSchedule)
+    {
+      c.calculateGrade();
+    }
+  }
+
+  public void printGradeReport()
+  {
+    Typer.print("\n--- END OF YEAR GRADE REPORT ---");
+    double totalPoints = 0;
+    int totalClasses = 0;
+    for (HighSchoolClass c : currentSchedule)
+    {
+      Typer.print(c.getName() + " | Grade: " + c.getLetterGrade() + " ("
+        + c.getNumericalGrade() + ")" + " | Homework: "
+        + c.getHomeworkWeeklyHours() + " hrs/week");
+      totalPoints += c.getNumericalGrade();
+      totalClasses++;
+    }
+    if (totalClasses > 0)
+    {
+      double avg = totalPoints / totalClasses;
+      Typer.print("\nFinal Average: " + String.format("%.1f", avg));
+      Typer.print("Letter: " + calculateOverallLetter(avg));
+    }
+  }
+
+  private String calculateOverallLetter(double avg)
+  {
+    if (avg >= 93)
+      return "A+";
+    else if (avg >= 90)
+      return "A";
+    else if (avg >= 87)
+      return "B+";
+    else if (avg >= 83)
+      return "B";
+    else if (avg >= 80)
+      return "B-";
+    else if (avg >= 77)
+      return "C+";
+    else if (avg >= 73)
+      return "C";
+    else if (avg >= 70)
+      return "C-";
+    else if (avg >= 67)
+      return "D+";
+    else if (avg >= 63)
+      return "D";
+    else
+      return "D-";
+  }
 }

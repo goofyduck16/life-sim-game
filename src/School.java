@@ -445,9 +445,10 @@ public class School
     Typer.print("View Transcript - (b)");
     Typer.print("View Current Schedule - (c)");
     Typer.print("View Available Classes - (d)");
-    Typer.print("Make Course Selection - (e)");
-    Typer.print("Edit Course Selection - (f)");
-    Typer.print("Return to Actions - (g)");
+    Typer.print("Add Courses - (e)");
+    Typer.print("Remove Courses - (f)");
+    Typer.print("Set Homework Hours - (g)");
+    Typer.print("Return to Actions - (h)");
 
     String letter = scan.next();
     scan.nextLine();
@@ -544,7 +545,7 @@ public class School
         return;
       }
 
-      Typer.print("\n--- MAKE COURSE SELECTION ---");
+      Typer.print("\n--- ADD CLASSES ---");
       Typer.print("Available classes:\n");
       for (int i = 0; i < classesAvail.size(); i++)
       {
@@ -595,7 +596,7 @@ public class School
         return;
       }
 
-      Typer.print("\n--- EDIT COURSE SELECTION ---");
+      Typer.print("\n--- REMOVE COURSES ---");
       Typer.print("Current schedule:\n");
       for (int i = 0; i < current.size(); i++)
       {
@@ -630,8 +631,16 @@ public class School
       runOption(player);
     }
 
-    // --- RETURN TO ACTIONS ---
     else if (letter.equals("g") || letter.equals("G"))
+    {
+      player.getClassSchedule().setHomeworkHours(scan);
+      Typer.print("\nPress enter to continue:");
+      scan.nextLine();
+      runOption(player);
+    }
+
+    // --- RETURN TO ACTIONS ---
+    else if (letter.equals("h") || letter.equals("H"))
     {
       FirstYear.run(player);
     }
