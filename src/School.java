@@ -6,6 +6,7 @@
  *          VHS Learning
  */
 import java.util.*;
+import java.util.InputMismatchException;
 
 public class School
 {
@@ -14,48 +15,48 @@ public class School
   static HighSchoolClass algebra2 =
     new HighSchoolClass("Algebra 2",
                         "Advanced algebra including functions, polynomials, and logarithms.",
-                        "Mr. Garcia", "math", 5, year, 1, 16, "None", 5);
+                        "Mr. Garcia", "math", 5, year, 1, 14, "None", 5);
   static HighSchoolClass honorsAlgebra2 =
     new HighSchoolClass("Honors Algebra 2",
                         "Accelerated advanced algebra with college prep rigor.",
-                        "Mr. Peterson", "math", 7, year, 1, 16, "None", 5);
+                        "Mr. Peterson", "math", 7, year, 1, 14, "None", 5);
   static HighSchoolClass geometry =
     new HighSchoolClass("Geometry",
                         "Study of shapes, angles, proofs, and spatial reasoning.",
-                        "Ms. Huang", "math", 4, year, 1, 15, "None", 5);
+                        "Ms. Huang", "math", 4, year, 1, 14, "None", 5);
   static HighSchoolClass honorsGeometry =
     new HighSchoolClass("Honors Geometry",
                         "Accelerated geometry with formal proofs and spatial reasoning.",
-                        "Ms. Huang", "math", 6, year, 1, 15, "None", 5);
+                        "Ms. Huang", "math", 6, year, 1, 14, "None", 5);
   static HighSchoolClass precalc =
     new HighSchoolClass("Pre-Calculus",
                         "Preparation for calculus including trigonometry and functions.",
-                        "Mr. Garcia", "math", 6, year, 1, 17,
+                        "Mr. Garcia", "math", 6, year, 1, 15,
                         "Algebra 2 or Honors Algebra 2", 5);
   static HighSchoolClass honorsPrecalc =
     new HighSchoolClass("Honors Pre-Calculus",
                         "Accelerated preparation for calculus with advanced trigonometry.",
-                        "Mr. Peterson", "math", 7, year, 1, 17,
+                        "Mr. Peterson", "math", 7, year, 1, 15,
                         "Algebra 2 or Honors Algebra 2", 5);
   static HighSchoolClass calcAB =
     new HighSchoolClass("AP Calculus AB",
                         "College level calculus covering limits, derivatives, and integrals.",
-                        "Mr. Peterson", "math", 9, year, 1, 17,
+                        "Mr. Peterson", "math", 9, year, 1, 16,
                         "Pre-Calculus or Honors Pre-Calculus", 5);
   static HighSchoolClass calcBC =
     new HighSchoolClass("AP Calculus BC",
                         "Advanced college level calculus extending AB with series and more.",
-                        "Ms. Huang", "math", 10, year, 1, 17, "AP Calculus AB",
+                        "Ms. Huang", "math", 10, year, 1, 16, "AP Calculus AB",
                         5);
   static HighSchoolClass statistics =
     new HighSchoolClass("Statistics",
                         "Introduction to data analysis, probability, and statistical reasoning.",
-                        "Mr. Garcia", "math", 4, year, 1, 16,
+                        "Mr. Garcia", "math", 4, year, 1, 15,
                         "Algebra 2 or Honors Algebra 2", 5);
   static HighSchoolClass apStatistics =
     new HighSchoolClass("AP Statistics",
                         "College level statistics with AP exam preparation.",
-                        "Ms. Huang", "math", 7, year, 1, 17,
+                        "Ms. Huang", "math", 7, year, 1, 15,
                         "Algebra 2 or Honors Algebra 2", 5);
 
   // --- ENGLISH ---
@@ -558,8 +559,20 @@ public class School
 
       Typer
         .print("\nEnter the number of the class you want to add (or 0 to cancel):");
-      int choice = scan.nextInt();
-      scan.nextLine();
+      int choice = -1;
+      while (choice == -1)
+      {
+        try
+        {
+          choice = scan.nextInt();
+          scan.nextLine();
+        }
+        catch (InputMismatchException e)
+        {
+          scan.nextLine(); // clear the bad input
+          Typer.print("Invalid input, please enter a number:");
+        }
+      }
 
       if (choice == 0)
       {

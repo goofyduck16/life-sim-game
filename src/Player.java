@@ -9,11 +9,9 @@ import java.util.*;
 
 public class Player
 {
-
   // Instance variables
   private double moneySaved;
   private double weeklyIncome;
-  private double timeAvail;
   private Job job;
   private ClassSchedule classSchedule;
   private Grades grades;
@@ -23,26 +21,128 @@ public class Player
   private int age;
   private ArrayList<HighSchoolClass> completedClasses =
     new ArrayList<HighSchoolClass>();
+  private ArrayList<Clubs> joinedClubs = new ArrayList<Clubs>();
+
+  // --- TIME MANAGEMENT ---
+  private static final int TOTAL_WEEKLY_HOURS = 168;
+  private static final int SLEEP_HOURS = 56; // 8hrs x 7 nights
+  private static final int AMENITY_HOURS = 21; // 3hrs x 7 days
+
+  private int schoolHours = 0;
+  private int homeworkHours = 0;
+  private int extracurricularHours = 0;
+  private int jobHours = 0;
 
   // Player constructor
-  public Player(int age, double moneySaved, double weeklyIncome,
-    double timeAvail, Job job, ClassSchedule classSchedule, Grades grades,
-    double weeklyExpenses, double hoursOfSleep, String name)
+  public Player(int age, double moneySaved, double weeklyIncome, Job job,
+    ClassSchedule classSchedule, Grades grades, double weeklyExpenses,
+    double hoursOfSleep, String name)
   {
     this.age = age;
     this.moneySaved = moneySaved;
     this.weeklyIncome = weeklyIncome;
-    this.timeAvail = timeAvail;
     this.job = job;
-    this.classSchedule = classSchedule;
+    this.classSchedule = new ClassSchedule(); // always starts fresh
     this.grades = grades;
     this.weeklyExpenses = weeklyExpenses;
     this.hoursOfSleep = hoursOfSleep;
     this.name = name;
-
   }
 
-  // name
+  // --- TIME GETTERS ---
+
+  // total hours available after sleep and amenities
+  public int getBudgetedHours()
+  {
+    return TOTAL_WEEKLY_HOURS - SLEEP_HOURS - AMENITY_HOURS;
+  }
+
+  // hours left after everything is assigned
+  public int getFreeHours()
+  {
+    return TOTAL_WEEKLY_HOURS - SLEEP_HOURS - AMENITY_HOURS - schoolHours
+      - homeworkHours - extracurricularHours - jobHours;
+  }
+
+  public int getSchoolHours()
+  {
+    return schoolHours;
+  }
+
+  public int getHomeworkHours()
+  {
+    return homeworkHours;
+  }
+
+  public int getExtracurricularHours()
+  {
+    return extracurricularHours;
+  }
+
+  public int getJobHours()
+  {
+    return jobHours;
+  }
+
+  // timeAvail now reflects true free hours
+  public double getTimeAvail()
+  {
+    return getFreeHours();
+  }
+
+  // --- TIME SETTERS ---
+
+  public void setSchoolHours(int hours)
+  {
+    schoolHours = hours;
+  }
+
+  public void setHomeworkHours(int hours)
+  {
+    homeworkHours = hours;
+  }
+
+  public void setExtracurricularHours(int hours)
+  {
+    extracurricularHours = hours;
+  }
+
+  public void setJobHours(int hours)
+  {
+    jobHours = hours;
+  }
+
+  // resets all allocated time at start of new year
+  public void resetTimeAllocation()
+  {
+    schoolHours = 0;
+    homeworkHours = 0;
+    extracurricularHours = 0;
+    jobHours = 0;
+  }
+
+  // prints full time breakdown
+  public void printTimeBreakdown()
+  {
+    Typer.print("\n--- WEEKLY TIME BUDGET ---");
+    Typer.print("Total hours in a week:       168 hrs");
+    Typer.print("Sleep (8 hrs/night):          -" + SLEEP_HOURS + " hrs");
+    Typer.print("Eating/hygiene/amenities:     -" + AMENITY_HOURS + " hrs");
+    Typer.print("-----------------------------");
+    Typer.print("Budgeted hours:               " + getBudgetedHours() + " hrs");
+    Typer.print("");
+    Typer.print("School (in class):            -" + schoolHours + " hrs");
+    Typer.print("Homework:                     -" + homeworkHours + " hrs");
+    Typer
+      .print("Extracurriculars:             -" + extracurricularHours + " hrs");
+    Typer.print("Job:                          -" + jobHours + " hrs");
+    Typer.print("-----------------------------");
+    Typer
+      .print("True free time:                " + getFreeHours() + " hrs/week");
+  }
+
+  // --- STANDARD GETTERS AND SETTERS ---
+
   public String getName()
   {
     return name;
@@ -53,18 +153,21 @@ public class Player
     this.name = name;
   }
 
-  // year
   public int getAge()
   {
     return age;
   }
 
-  public void setYear(int age)
+  public void setAge(int age)
   {
     this.age = age;
   }
 
-  // moneySaved
+  public void incrementAge()
+  {
+    this.age++;
+  }
+
   public double getMoneySaved()
   {
     return moneySaved;
@@ -75,7 +178,6 @@ public class Player
     this.moneySaved = moneySaved;
   }
 
-  // weeklyIncome
   public double getWeeklyIncome()
   {
     return weeklyIncome;
@@ -86,18 +188,6 @@ public class Player
     this.weeklyIncome = weeklyIncome;
   }
 
-  // timeAvail
-  public double getTimeAvail()
-  {
-    return timeAvail;
-  }
-
-  public void setTimeAvail(double timeAvail)
-  {
-    this.timeAvail = timeAvail;
-  }
-
-  // job
   public Job getJob()
   {
     return job;
@@ -108,7 +198,6 @@ public class Player
     this.job = job;
   }
 
-  // classSchedule
   public ClassSchedule getClassSchedule()
   {
     return classSchedule;
@@ -134,7 +223,7 @@ public class Player
     return hoursOfSleep;
   }
 
-  public void setHoursOfSleep(int newSleep)
+  public void setHoursOfSleep(double newSleep)
   {
     hoursOfSleep = newSleep;
   }
@@ -154,13 +243,11 @@ public class Player
     return completedClasses;
   }
 
-  // call this at the end of each school year to add the classes they finished
   public void addCompletedClass(HighSchoolClass c)
   {
     completedClasses.add(c);
   }
 
-  // useful for displaying their transcript
   public void printCompletedClasses()
   {
     if (completedClasses.isEmpty())
@@ -177,23 +264,31 @@ public class Player
     }
   }
 
+  public ArrayList<Clubs> getJoinedClubs()
+  {
+    return joinedClubs;
+  }
+
+  // --- RUN OPTION ---
+
   public static void runOption(Player player)
   {
     String name = player.getName();
 
     Scanner scan = new Scanner(System.in);
-    Typer.print("What would you like to view in Player Stats?");
+    Typer.print("\nWhat would you like to view in Player Stats?");
     Typer.print("Profile - (a)");
-    Typer.print("Return to Actions - (b)");
+    Typer.print("Time Budget - (b)");
+    Typer.print("Return to Actions - (c)");
 
     String letter = scan.next();
     scan.nextLine();
+
     if (letter.equals("a") || letter.equals("A"))
     {
       Grades grades = player.getGrades();
       int age = player.getAge();
       double weeklyIncome = player.getWeeklyIncome();
-      double timeAvail = player.getTimeAvail();
       Job job = player.getJob();
       double moneySaved = player.getMoneySaved();
       double weeklyExpenses = player.getWeeklyExpenses();
@@ -221,49 +316,46 @@ public class Player
       // Job
       Typer.print("--- EMPLOYMENT ---");
       if (job == null)
-      {
         Typer.print("Job:                 Unemployed\n");
-      }
       else
-      {
         Typer.print("Job:                 " + job.toString() + "\n");
-      }
 
       // Academics
       Typer.print("--- ACADEMICS ---");
       if (grades == null)
-      {
-        Typer.print("Grades:              No grades yet\n");
-      }
+        Typer.print("Scheldule:           No scheldule yet\n");
       else
-      {
-        Typer.print("Grades:              " + grades.toString() + "\n");
-      }
+        player.getClassSchedule().printSchedule();
 
       // Lifestyle
       Typer.print("--- LIFESTYLE ---");
       Typer.print("Hours of Sleep:      " + hoursOfSleep + " hrs/night");
-      Typer.print("Free Time:           " + timeAvail + " hrs/week\n");
+      Typer
+        .print("Free Time:           " + player.getFreeHours() + " hrs/week\n");
 
       Typer.print("=============================");
       Typer.print("Press enter to return:");
       scan.nextLine();
       runOption(player);
-
     }
 
     else if (letter.equals("b") || letter.equals("B"))
     {
+      player.printTimeBreakdown();
+      Typer.print("\nPress enter to return:");
+      scan.nextLine();
+      runOption(player);
+    }
+
+    else if (letter.equals("c") || letter.equals("C"))
+    {
       FirstYear.run(player);
     }
+
     else
     {
       Typer.print("I am sorry I did not understand that. Please try again.");
       runOption(player);
     }
-
-    scan.close();
-
   }
-
 }

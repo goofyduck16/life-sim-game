@@ -205,27 +205,27 @@ public class HighSchoolClass
     letterGrade = calculateLetterGrade(numericalGrade);
   }
 
-  private String calculateLetterGrade(int numericalGrade)
+  public String calculateLetterGrade(int numericalGrade1)
   {
-    if (numericalGrade >= 93)
+    if (numericalGrade1 >= 93)
       return "A+";
-    else if (numericalGrade >= 90)
+    else if (numericalGrade1 >= 90)
       return "A";
-    else if (numericalGrade >= 87)
+    else if (numericalGrade1 >= 87)
       return "B+";
-    else if (numericalGrade >= 83)
+    else if (numericalGrade1 >= 83)
       return "B";
-    else if (numericalGrade >= 80)
+    else if (numericalGrade1 >= 80)
       return "B-";
-    else if (numericalGrade >= 77)
+    else if (numericalGrade1 >= 77)
       return "C+";
-    else if (numericalGrade >= 73)
+    else if (numericalGrade1 >= 73)
       return "C";
-    else if (numericalGrade >= 70)
+    else if (numericalGrade1 >= 70)
       return "C-";
-    else if (numericalGrade >= 67)
+    else if (numericalGrade1 >= 67)
       return "D+";
-    else if (numericalGrade >= 63)
+    else if (numericalGrade1 >= 63)
       return "D";
     else
       return "D-";

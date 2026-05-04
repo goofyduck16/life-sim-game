@@ -158,9 +158,7 @@ public class ClassSchedule
         + c.getDifficultyLevel() + "/10" + " | Class hours/week: "
         + c.getClassTime());
       Typer.print("Recommended homework: "
-        + String.format("%.1f",
-                        (c.getDifficultyLevel() / 10.0) * c.getClassTime())
-        + " hrs/week");
+        + (c.getDifficultyLevel() / 10.0) * c.getClassTime() + " hrs/week");
       Typer.print("Hours remaining to assign: " + hoursLeft);
       Typer
         .print("How many hours per week do you want to study for this class? (0-"
@@ -192,7 +190,7 @@ public class ClassSchedule
     Typer.print("Total homework hours assigned: " + hoursAssigned + "/"
       + freeHours);
     Typer.print("Unassigned free hours: " + (freeHours - hoursAssigned)
-      + " (used for rest, extracurriculars, eating, etc)");
+      + " (used for rest, extracurriculars, work, etc)");
   }
 
   public void calculateAllGrades()
@@ -224,7 +222,7 @@ public class ClassSchedule
     }
   }
 
-  private String calculateOverallLetter(double avg)
+  public String calculateOverallLetter(double avg)
   {
     if (avg >= 93)
       return "A+";

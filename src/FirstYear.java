@@ -16,7 +16,7 @@ public class FirstYear
     Typer.print("\nYear one-\n");
     actionPrompt();
     String choice = scan.next();
-    moveToCorrectClass(choice, player);
+    moveToCorrectClass(choice, player, scan);
 
     scan.close();
   }
@@ -35,7 +35,8 @@ public class FirstYear
 
   }
 
-  public static void moveToCorrectClass(String letter, Player player)
+  public static void moveToCorrectClass(String letter, Player player,
+                                        Scanner scan)
   {
     if (letter.equals("a") || letter.equals("A"))
     {
@@ -49,10 +50,10 @@ public class FirstYear
     {
       School.runOption(player);
     }
-    // else if (letter.equals("d") || letter.equals("D"))
-    // {
-    // Extracurriculars.runOption(player);
-    // }
+    else if (letter.equals("d") || letter.equals("D"))
+    {
+      Extracurriculars.runOption(player);
+    }
     // else if (letter.equals("e") || letter.equals("E"))
     // {
     // Finicials.runOption(player);
@@ -71,6 +72,18 @@ public class FirstYear
     // {
     // finishYear();
     // }
+    else if (letter.equals("h") || letter.equals("H"))
+    {
+      if (finishYearCheck(player))
+      {
+        finishYear(player, scan);
+      }
+      else
+      {
+        Typer.print("Please complete all requirements before ending the year.");
+        run(player);
+      }
+    }
     // else
     // {
     // Typer
@@ -86,25 +99,134 @@ public class FirstYear
 
   }
 
-  public static boolean finishYearCheck()
+  public static boolean finishYearCheck(Player player)
   {
-    return false;
+    // check they have at least one class
+    if (player.getClassSchedule().getCurrentSchedule().isEmpty())
+    {
+      Typer.print("You have not selected any classes yet!");
+      return false;
+    }
+
+    // check for required subjects
+    boolean hasMath = false;
+    boolean hasScience = false;
+    boolean hasHistory = false;
+    boolean hasEnglish = false;
+
+    for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
+    {
+      if (c.getType().equals("math"))
+        hasMath = true;
+      if (c.getType().equals("science"))
+        hasScience = true;
+      if (c.getType().equals("history"))
+        hasHistory = true;
+      if (c.getType().equals("english"))
+        hasEnglish = true;
+    }
+
+    // tell the player exactly what they are missing
+    if (!hasMath)
+    {
+      Typer
+        .print("You need at least one Math class before you can end the year!");
+      return false;
+    }
+    if (!hasScience)
+    {
+      Typer
+        .print("You need at least one Science class before you can end the year!");
+      return false;
+    }
+    if (!hasHistory)
+    {
+      Typer
+        .print("You need at least one History class before you can end the year!");
+      return false;
+    }
+    if (!hasEnglish)
+    {
+      Typer
+        .print("You need at least one English class before you can end the year!");
+      return false;
+    }
+
+    // check homework hours are set for every class
+    for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
+    {
+      if (c.getHomeworkWeeklyHours() == 0)
+      {
+        Typer.print("You have not set homework hours for " + c.getName()
+          + " yet!");
+        return false;
+      }
+    }
+
+    return true;
   }
 
-  public static void finishYear(Player player)
+  public static void finishYear(Player player, Scanner scan)
   {
-    // calculate grades based on homework hours set during the year
-    player.getClassSchedule().calculateAllGrades();
-    player.getClassSchedule().printGradeReport();
+    Typer.print("\n=============================");
+    Typer.print("       END OF YEAR RECAP");
+    Typer.print("=============================\n");
 
-    // move completed classes to player transcript
+    Typer.print("The year is over, " + player.getName() + ".");
+    Typer.print("Let's see how everything played out...\n");
+    scan.nextLine();
+
+    // --- GRADES ---
+    Typer.print("Calculating your grades...\n");
+    player.getClassSchedule().calculateAllGrades();
+    scan.nextLine();
+
+    player.getClassSchedule().printGradeReport();
+    scan.nextLine();
+
+    // --- MOVE CLASSES TO TRANSCRIPT ---
     for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
     {
       player.addCompletedClass(c);
     }
 
-    // clear schedule for next year
+    // --- CREDIT SUMMARY ---
+    Typer.print("\n--- CREDITS EARNED THIS YEAR ---");
+    player.getClassSchedule().printCreditSummary();
+    scan.nextLine();
+
+    // --- FINANCIAL SUMMARY ---
+    Typer.print("\n--- FINANCIAL SUMMARY ---");
+    Typer.print("Money saved this year:   $"
+      + String.format("%.2f", player.getMoneySaved()));
+    Typer.print("Weekly income:           $"
+      + String.format("%.2f", player.getWeeklyIncome()));
+    Typer.print("Weekly expenses:         $"
+      + String.format("%.2f", player.getWeeklyExpenses()));
+    scan.nextLine();
+
+    // --- LIFESTYLE SUMMARY ---
+    Typer.print("\n--- LIFESTYLE SUMMARY ---");
+    Typer.print("Hours of sleep per night: " + player.getHoursOfSleep());
+    Typer.print("Free time per week:       " + player.getTimeAvail() + " hrs");
+    scan.nextLine();
+
+    // --- CLEAR SCHEDULE FOR NEXT YEAR ---
     player.getClassSchedule().getCurrentSchedule().clear();
+
+    // --- AGE UP ---
+    // you will need a setAge() or incrementAge() method in Player
+    // player.incrementAge();
+
+    Typer.print("\n=============================");
+    Typer
+      .print(player.getName() + " is now " + player.getAge() + " years old.");
+    Typer.print("Press enter to continue to next year:");
+    scan.nextLine();
+
+    // move to next year
+    Runner.yearInRunner++;
+    // SecondYear.run(player); // uncomment when ready
   }
 
 }
