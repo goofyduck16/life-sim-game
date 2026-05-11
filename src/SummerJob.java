@@ -12,7 +12,7 @@ public class SummerJob
   private String type;
 
   // --- CONSTANTS ---
-  public static final int SUMMER_WEEKS = 9;
+  public static final int SUMMER_WEEKS = 12;
   public static final int SUMMER_TOTAL_HOURS = 168;
   public static final int SUMMER_SLEEP_HOURS = 56;
   public static final int SUMMER_AMENITY_HOURS = 21;

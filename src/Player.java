@@ -25,6 +25,7 @@ public class Player
   private Sports currentSport = null;
   private ArrayList<SummerJob> summerJobs = new ArrayList<SummerJob>();
   private int summerJobHours = 0;
+  private double loanBalance = 0;
 
   // --- TIME MANAGEMENT ---
   private static final int TOTAL_WEEKLY_HOURS = 168;
@@ -285,6 +286,16 @@ public class Player
   public int getSummerFreeHours()
   {
     return SummerJob.SUMMER_BASE_FREE_HOURS - summerJobHours;
+  }
+
+  public double getLoanBalance()
+  {
+    return loanBalance;
+  }
+
+  public void setLoanBalance(double amount)
+  {
+    loanBalance = amount;
   }
 
   // --- RUN OPTION ---

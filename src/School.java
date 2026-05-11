@@ -119,7 +119,7 @@ public class School
   static HighSchoolClass honorsIntroPhysics =
     new HighSchoolClass("Honors Intro to Physics",
                         "Conceptual introduction to motion, energy, and forces. No calculus required.",
-                        "Mr. Nakamura", "science", 3, year, 1, 14, "None", 5);
+                        "Mr. Nakamura", "science", 5, year, 1, 14, "None", 5);
   static HighSchoolClass biology =
     new HighSchoolClass("Biology",
                         "Introduction to living organisms, cells, and ecosystems.",

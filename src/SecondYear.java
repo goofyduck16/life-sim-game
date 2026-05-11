@@ -1,21 +1,17 @@
-
-/**
- * Preference file version 110624
- * 
- * @author: Your First and Last name goes here!
- *          VHS Learning
- */
 import java.util.Scanner;
 
-public class FirstYear
+public class SecondYear
 {
   public static void run(Player player)
   {
     Scanner scan = new Scanner(System.in);
 
-    Typer.print("\nYear one-\n");
+    Typer.print("\n--- YEAR TWO ---");
+    Typer
+      .print(player.getName() + " is now " + player.getAge() + " years old.\n");
     actionPrompt();
     String choice = scan.next();
+    scan.nextLine();
     moveToCorrectClass(choice, player, scan);
 
     scan.close();
@@ -28,11 +24,10 @@ public class FirstYear
     Typer.print("Access Player Stats-(b)");
     Typer.print("Access School-(c)");
     Typer.print("Access Extracurriculars-(d)");
-    Typer.print("Access Finicials-(e)");
+    Typer.print("Access Financials-(e)");
     Typer.print("Access Game Information-(f)");
-    Typer.print("Access Summer Job-(g)");
+    Typer.print("Access Summer Jobs-(g)");
     Typer.print("End year-(h)");
-
   }
 
   public static void moveToCorrectClass(String letter, Player player,
@@ -55,7 +50,6 @@ public class FirstYear
       Extracurriculars.runOption(player);
     }
     else if (letter.equals("e") || letter.equals("E"))
-
     {
       Financials.runOption(player);
     }
@@ -67,7 +61,6 @@ public class FirstYear
     {
       SummerJob.runOption(player);
     }
-
     else if (letter.equals("h") || letter.equals("H"))
     {
       if (finishYearCheck(player))
@@ -80,25 +73,21 @@ public class FirstYear
         run(player);
       }
     }
-
     else
     {
       Typer.print("I did not understand that command. Please try again:\n");
       run(player);
     }
-
   }
 
   public static boolean finishYearCheck(Player player)
   {
-    // check they have at least one class
     if (player.getClassSchedule().getCurrentSchedule().isEmpty())
     {
       Typer.print("You have not selected any classes yet!");
       return false;
     }
 
-    // check for required subjects
     boolean hasMath = false;
     boolean hasScience = false;
     boolean hasHistory = false;
@@ -141,7 +130,6 @@ public class FirstYear
       return false;
     }
 
-    // check homework hours are set for every class
     for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
     {
       if (c.getHomeworkWeeklyHours() == 0)
@@ -160,7 +148,7 @@ public class FirstYear
     Typer.print("\n=============================");
     Typer.print("       END OF YEAR RECAP");
     Typer.print("=============================\n");
-    Typer.print("The year is over, " + player.getName() + ".");
+    Typer.print("Year two is over, " + player.getName() + ".");
     Typer.print("Let's see how everything played out...");
     Typer.print("Press enter to continue:");
     scan.nextLine();
@@ -176,9 +164,7 @@ public class FirstYear
 
     // --- MOVE CLASSES TO TRANSCRIPT ---
     for (HighSchoolClass c : player.getClassSchedule().getCurrentSchedule())
-    {
       player.addCompletedClass(c);
-    }
 
     // --- CREDIT SUMMARY ---
     Typer.print("\n--- CREDITS EARNED THIS YEAR ---");
@@ -197,8 +183,6 @@ public class FirstYear
       + String.format("%.2f", schoolExpenses));
     Typer
       .print("Net gain:                $" + String.format("%.2f", schoolNet));
-
-    // apply school year net to money saved
     player.setMoneySaved(player.getMoneySaved() + schoolNet);
     Typer.print("Money saved:             $"
       + String.format("%.2f", player.getMoneySaved()));
@@ -208,9 +192,7 @@ public class FirstYear
     // --- CLUBS SUMMARY ---
     Typer.print("\n--- EXTRACURRICULARS SUMMARY ---");
     if (player.getJoinedClubs().isEmpty())
-    {
       Typer.print("You were not in any clubs this year.");
-    }
     else
     {
       Typer.print("Clubs you participated in:");
@@ -230,9 +212,7 @@ public class FirstYear
         + player.getCurrentSport().getMastery() + "/10");
     }
     else
-    {
       Typer.print("\nYou did not play a sport this year.");
-    }
     Typer.print("\nPress enter to continue:");
     scan.nextLine();
 
@@ -253,9 +233,7 @@ public class FirstYear
     // --- SUMMER ---
     Typer.print("\n--- SUMMER ---");
     if (player.getSummerJobs().isEmpty())
-    {
       Typer.print("You did not have any summer activities planned.");
-    }
     else
     {
       Typer.print("Summer activities:");
@@ -263,8 +241,6 @@ public class FirstYear
         Typer.print("  - " + j.getName() + " | $"
           + String.format("%.2f", j.getTotalSummerPay()) + " total");
     }
-
-    // add summer earnings as lump sum
     SummerJob.endOfSummer(player);
     Typer.print("\nPress enter to continue:");
     scan.nextLine();
@@ -276,13 +252,11 @@ public class FirstYear
       boolean loanRepaid = Financials.repayLoan(player, scan);
       if (!loanRepaid)
       {
-        // cant afford loan - send back to actions to reorganize
-        // before doing that, restore the summer earnings so state is consistent
         Typer
           .print("Please reorganize your finances and try to end the year again.");
         Typer.print("Press enter to return to actions:");
         scan.nextLine();
-        FirstYear.run(player);
+        SecondYear.run(player);
         return;
       }
       Typer.print("\nPress enter to continue:");
@@ -292,18 +266,14 @@ public class FirstYear
     // --- JOBS SUMMARY THEN CLEAR ---
     Typer.print("\n--- EMPLOYMENT SUMMARY ---");
     if (player.getJobs().isEmpty())
-    {
       Typer.print("You were not employed during the school year.");
-    }
     else
     {
       Typer.print("Jobs held this year:");
       for (Job j : player.getJobs())
-      {
         Typer.print("  - " + j.getName() + " | $"
           + String.format("%.2f", j.getWeeklyPay()) + "/week | "
           + j.getTimeWeekly() + " hrs/week");
-      }
     }
     Typer.print("\nPress enter to continue:");
     scan.nextLine();
@@ -320,32 +290,18 @@ public class FirstYear
     scan.nextLine();
 
     // --- CLEAR EVERYTHING FOR NEXT YEAR ---
-
-    // clear school schedule
     player.getClassSchedule().getCurrentSchedule().clear();
-
-    // clear jobs and reset income
     for (Job j : player.getJobs())
       player.setWeeklyIncome(player.getWeeklyIncome() - j.getWeeklyPay());
     player.getJobs().clear();
-
-    // clear clubs
     player.getJoinedClubs().clear();
-
-    // clear summer
     player.getSummerJobs().clear();
     player.setSummerJobHours(0);
-
-    // reset all time allocation
     player.resetTimeAllocation();
-
-    // age up
     player.incrementAge();
-
-    // increment year
     Runner.yearInRunner++;
 
-    // --- TRANSITION TO NEXT YEAR ---
+    // --- TRANSITION ---
     Typer.print("\n=============================");
     Typer
       .print(player.getName() + " is now " + player.getAge() + " years old.");
@@ -353,6 +309,6 @@ public class FirstYear
     Typer.print("Press enter to continue:");
     scan.nextLine();
 
-    SecondYear.run(player); // uncomment when ready
+    ThirdYear.run(player);
   }
 }
