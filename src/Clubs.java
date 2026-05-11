@@ -193,7 +193,7 @@ public class Clubs
 
     if (eligible.isEmpty())
     {
-      Typer.print("\nThere are no clubs available to join right now.");
+      Typer.print("\nThere are no clubs available to join.");
       return;
     }
 
@@ -212,7 +212,6 @@ public class Clubs
 
     Clubs chosen = eligible.get(choice - 1);
 
-    // check if player has enough free time
     if (chosen.getTimeWeekly() > player.getFreeHours())
     {
       Typer.print("You don't have enough free time for " + chosen.getName()
@@ -225,8 +224,9 @@ public class Clubs
     player.getJoinedClubs().add(chosen);
     player.setExtracurricularHours(player.getExtracurricularHours()
       + chosen.getTimeWeekly());
-    Typer.print(chosen.getName() + " joined! (" + chosen.getTimeWeekly()
-      + " hrs/week committed)");
+
+    Typer.print(chosen.getName() + " joined!");
+    Typer.print("Hours committed: " + chosen.getTimeWeekly() + " hrs/week");
     Typer.print("Free hours remaining: " + player.getFreeHours() + " hrs/week");
   }
 
@@ -256,8 +256,9 @@ public class Clubs
     joined.remove(chosen);
     player.setExtracurricularHours(player.getExtracurricularHours()
       - chosen.getTimeWeekly());
+
     Typer.print("You have left " + chosen.getName() + ".");
-    Typer.print("Free hours returned: " + chosen.getTimeWeekly() + " hrs/week");
+    Typer.print("Hours returned: " + chosen.getTimeWeekly() + " hrs/week");
     Typer.print("Free hours now: " + player.getFreeHours() + " hrs/week");
   }
 }

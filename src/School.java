@@ -646,7 +646,7 @@ public class School
 
     else if (letter.equals("g") || letter.equals("G"))
     {
-      player.getClassSchedule().setHomeworkHours(scan);
+      player.getClassSchedule().setHomeworkHours(scan, player);
       Typer.print("\nPress enter to continue:");
       scan.nextLine();
       runOption(player);

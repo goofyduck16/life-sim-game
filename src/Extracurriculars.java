@@ -21,9 +21,7 @@ public class Extracurriculars
     Typer.print("Edit sports - (d)");
     Typer.print("Get Job - (e)");
     Typer.print("Edit Jobs - (f)");
-    Typer.print("Get tutor - (g)");
-    Typer.print("Edit tutor - (h)");
-    Typer.print("Return to Actions - (i)");
+    Typer.print("Return to Actions - (g)");
 
     String letter = scan.next();
     scan.nextLine();
@@ -41,9 +39,42 @@ public class Extracurriculars
       scan.nextLine();
       runOption(player);
     }
-    else if (letter.equals("i") || letter.equals("I"))
+    else if (letter.equals("c") || letter.equals("C"))
+    {
+      Sports.joinSport(player, scan);
+      Typer.print("\nPress enter to continue:");
+      scan.nextLine();
+      runOption(player);
+    }
+    else if (letter.equals("d") || letter.equals("D"))
+    {
+      Sports.quitSport(player, scan);
+      Typer.print("\nPress enter to continue:");
+      scan.nextLine();
+      runOption(player);
+    }
+    else if (letter.equals("e") || letter.equals("E"))
+    {
+      Job.getJob(player, scan);
+      Typer.print("\nPress enter to continue:");
+      scan.nextLine();
+      runOption(player);
+    }
+    else if (letter.equals("f") || letter.equals("F"))
+    {
+      Job.quitJob(player, scan);
+      Typer.print("\nPress enter to continue:");
+      scan.nextLine();
+      runOption(player);
+    }
+    else if (letter.equals("g") || letter.equals("G"))
     {
       FirstYear.run(player);
+    }
+    else
+    {
+      Typer.print("Invalid option, please try again.");
+      runOption(player);
     }
 
     scan.close();

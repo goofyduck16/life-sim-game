@@ -132,7 +132,7 @@ public class ClassSchedule
     printCreditSummary();
   }
 
-  public void setHomeworkHours(Scanner scan)
+  public void setHomeworkHours(Scanner scan, Player player)
   {
     if (currentSchedule.isEmpty())
     {
@@ -140,29 +140,39 @@ public class ClassSchedule
       return;
     }
 
-    // calculate how many free hours the player has
-    // assuming a 168 hr week: sleep(56) + school hours + meals/hygiene(21)
-    int freeHours = 168 - 56 - 21 - getTotalHours();
+    // reset homework hours before reassigning so player can redo this
+    player.setHomeworkHours(0);
 
     Typer.print("\n--- SET HOMEWORK HOURS ---");
-    Typer
-      .print("You have approximately " + freeHours + " free hours per week.");
-    Typer.print("Distribute your study time wisely across your classes.\n");
+    Typer.print("You have " + player.getFreeHours() + " free hours per week.");
+    Typer.print("Distribute your study time across your classes.\n");
 
     int hoursAssigned = 0;
 
     for (HighSchoolClass c : currentSchedule)
     {
-      int hoursLeft = freeHours - hoursAssigned;
-      Typer.print("Class: " + c.getName() + " | Difficulty: "
-        + c.getDifficultyLevel() + "/10" + " | Class hours/week: "
-        + c.getClassTime());
-      Typer.print("Recommended homework: "
-        + (c.getDifficultyLevel() / 10.0) * c.getClassTime() + " hrs/week");
-      Typer.print("Hours remaining to assign: " + hoursLeft);
-      Typer
-        .print("How many hours per week do you want to study for this class? (0-"
-          + hoursLeft + "):");
+      int hoursLeft = player.getFreeHours() - hoursAssigned;
+
+      if (hoursLeft <= 0)
+      {
+        Typer
+          .print("No hours left! " + c.getName() + " gets 0 homework hours.");
+        c.setHomeworkWeeklyHours(0);
+        continue;
+      }
+
+      Typer.print("-----------------------------");
+      Typer.print("Class:       " + c.getName());
+      Typer.print("Difficulty:  " + c.getDifficultyLevel() + "/10");
+      Typer.print(
+                  "Recommended: "
+                    + String.format("%.1f",
+                                    (c.getDifficultyLevel() / 10.0)
+                                      * c.getClassTime())
+                    + " hrs/week of homework");
+      Typer.print("Hours left to assign: " + hoursLeft);
+      Typer.print("How many hours per week will you study for this class? (0-"
+        + hoursLeft + "):");
 
       int hours = -1;
       while (hours < 0 || hours > hoursLeft)
@@ -170,27 +180,31 @@ public class ClassSchedule
         try
         {
           hours = scan.nextInt();
+          scan.nextLine();
           if (hours < 0 || hours > hoursLeft)
             Typer
               .print("Please enter a number between 0 and " + hoursLeft + ":");
         }
-        catch (Exception e)
+        catch (InputMismatchException e)
         {
-          Typer.print("Please enter a valid number:");
           scan.nextLine();
+          Typer.print("Invalid input, please enter a number:");
         }
       }
-      scan.nextLine();
 
       c.setHomeworkWeeklyHours(hours);
       hoursAssigned += hours;
-      Typer.print("Set " + hours + " hrs/week for " + c.getName() + "\n");
+      Typer.print("Set " + hours + " hrs/week for " + c.getName());
     }
 
-    Typer.print("Total homework hours assigned: " + hoursAssigned + "/"
-      + freeHours);
-    Typer.print("Unassigned free hours: " + (freeHours - hoursAssigned)
-      + " (used for rest, extracurriculars, work, etc)");
+    // sync total back to player
+    player.setHomeworkHours(hoursAssigned);
+
+    Typer.print("\n--- HOMEWORK SUMMARY ---");
+    Typer
+      .print("Total homework hours assigned: " + hoursAssigned + " hrs/week");
+    Typer.print("Free hours remaining:          " + player.getFreeHours()
+      + " hrs/week");
   }
 
   public void calculateAllGrades()

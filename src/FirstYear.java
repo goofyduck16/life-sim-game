@@ -55,6 +55,7 @@ public class FirstYear
       Extracurriculars.runOption(player);
     }
     // else if (letter.equals("e") || letter.equals("E"))
+
     // {
     // Finicials.runOption(player);
     // }
@@ -62,16 +63,11 @@ public class FirstYear
     // {
     // GameOverview.runOption(player);
     // }
-    // else if (letter.equals("g") || letter.equals("G"))
-    // {
-    // SummerJob.runOption(player);
-    // }
-    // else if (letter.equals("g") || letter.equals("G"))
-    // {
-    // if (finishYearCheck())
-    // {
-    // finishYear();
-    // }
+    else if (letter.equals("g") || letter.equals("G"))
+    {
+      SummerJob.runOption(player);
+    }
+
     else if (letter.equals("h") || letter.equals("H"))
     {
       if (finishYearCheck(player))
@@ -208,11 +204,25 @@ public class FirstYear
     // --- LIFESTYLE SUMMARY ---
     Typer.print("\n--- LIFESTYLE SUMMARY ---");
     Typer.print("Hours of sleep per night: " + player.getHoursOfSleep());
-    Typer.print("Free time per week:       " + player.getTimeAvail() + " hrs");
+    Typer.print("Free time per week:       " + player.getFreeHours() + " hrs");
     scan.nextLine();
 
     // --- CLEAR SCHEDULE FOR NEXT YEAR ---
     player.getClassSchedule().getCurrentSchedule().clear();
+
+    // Clear job
+    for (Job j : player.getJobs())
+    {
+      player.setWeeklyIncome(player.getWeeklyIncome() - j.getWeeklyPay());
+    }
+    player.getJobs().clear();
+    player.setJobHours(0);
+
+    // Move sport info
+    Sports.endOfYearSportUpdate(player);
+
+    // clear summer
+    SummerJob.endOfSummer(player);
 
     // --- AGE UP ---
     // you will need a setAge() or incrementAge() method in Player

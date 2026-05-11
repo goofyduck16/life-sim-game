@@ -12,7 +12,7 @@ public class Player
   // Instance variables
   private double moneySaved;
   private double weeklyIncome;
-  private Job job;
+  private ArrayList<Job> jobs = new ArrayList<Job>();
   private ClassSchedule classSchedule;
   private Grades grades;
   private double weeklyExpenses;
@@ -22,26 +22,29 @@ public class Player
   private ArrayList<HighSchoolClass> completedClasses =
     new ArrayList<HighSchoolClass>();
   private ArrayList<Clubs> joinedClubs = new ArrayList<Clubs>();
+  private Sports currentSport = null;
+  private ArrayList<SummerJob> summerJobs = new ArrayList<SummerJob>();
+  private int summerJobHours = 0;
 
   // --- TIME MANAGEMENT ---
   private static final int TOTAL_WEEKLY_HOURS = 168;
   private static final int SLEEP_HOURS = 56; // 8hrs x 7 nights
   private static final int AMENITY_HOURS = 21; // 3hrs x 7 days
+  private static final int SCHOOL_HOURS = 30; // 6hrs x 5 days
+  private static final int BASE_FREE_HOURS = 61; // 168 - 56 - 21 - 30
 
-  private int schoolHours = 0;
   private int homeworkHours = 0;
   private int extracurricularHours = 0;
   private int jobHours = 0;
 
   // Player constructor
-  public Player(int age, double moneySaved, double weeklyIncome, Job job,
+  public Player(int age, double moneySaved, double weeklyIncome,
     ClassSchedule classSchedule, Grades grades, double weeklyExpenses,
     double hoursOfSleep, String name)
   {
     this.age = age;
     this.moneySaved = moneySaved;
     this.weeklyIncome = weeklyIncome;
-    this.job = job;
     this.classSchedule = new ClassSchedule(); // always starts fresh
     this.grades = grades;
     this.weeklyExpenses = weeklyExpenses;
@@ -49,24 +52,11 @@ public class Player
     this.name = name;
   }
 
-  // --- TIME GETTERS ---
+  // school hours are ALWAYS 30, never stored or changed
 
-  // total hours available after sleep and amenities
-  public int getBudgetedHours()
-  {
-    return TOTAL_WEEKLY_HOURS - SLEEP_HOURS - AMENITY_HOURS;
-  }
-
-  // hours left after everything is assigned
   public int getFreeHours()
   {
-    return TOTAL_WEEKLY_HOURS - SLEEP_HOURS - AMENITY_HOURS - schoolHours
-      - homeworkHours - extracurricularHours - jobHours;
-  }
-
-  public int getSchoolHours()
-  {
-    return schoolHours;
+    return BASE_FREE_HOURS - homeworkHours - extracurricularHours - jobHours;
   }
 
   public int getHomeworkHours()
@@ -79,22 +69,33 @@ public class Player
     return extracurricularHours;
   }
 
+  public ArrayList<Job> getJobs()
+  {
+    return jobs;
+  }
+
   public int getJobHours()
   {
     return jobHours;
   }
 
-  // timeAvail now reflects true free hours
-  public double getTimeAvail()
+  public void addJob(Job j)
   {
-    return getFreeHours();
+    jobs.add(j);
+    setJobHours(getJobHours() + j.getTimeWeekly());
+    setWeeklyIncome(getWeeklyIncome() + j.getWeeklyPay());
   }
 
-  // --- TIME SETTERS ---
-
-  public void setSchoolHours(int hours)
+  public void removeJob(Job j)
   {
-    schoolHours = hours;
+    jobs.remove(j);
+    setJobHours(getJobHours() - j.getTimeWeekly());
+    setWeeklyIncome(getWeeklyIncome() - j.getWeeklyPay());
+  }
+
+  public boolean hasJob(Job j)
+  {
+    return jobs.contains(j);
   }
 
   public void setHomeworkHours(int hours)
@@ -112,35 +113,31 @@ public class Player
     jobHours = hours;
   }
 
-  // resets all allocated time at start of new year
   public void resetTimeAllocation()
   {
-    schoolHours = 0;
     homeworkHours = 0;
     extracurricularHours = 0;
     jobHours = 0;
   }
 
-  // prints full time breakdown
   public void printTimeBreakdown()
   {
     Typer.print("\n--- WEEKLY TIME BUDGET ---");
-    Typer.print("Total hours in a week:       168 hrs");
-    Typer.print("Sleep (8 hrs/night):          -" + SLEEP_HOURS + " hrs");
-    Typer.print("Eating/hygiene/amenities:     -" + AMENITY_HOURS + " hrs");
-    Typer.print("-----------------------------");
-    Typer.print("Budgeted hours:               " + getBudgetedHours() + " hrs");
+    Typer.print("Total hours in a week:         168 hrs");
+    Typer.print("Sleep (8 hrs/night):           -56 hrs");
+    Typer.print("Eating/hygiene/amenities:      -21 hrs");
+    Typer.print("School (6 hrs/day, 5 days):    -30 hrs");
+    Typer.print("--------------------------------");
+    Typer.print("Starting free hours:            61 hrs");
     Typer.print("");
-    Typer.print("School (in class):            -" + schoolHours + " hrs");
-    Typer.print("Homework:                     -" + homeworkHours + " hrs");
+    Typer.print("Homework:                      -" + homeworkHours + " hrs");
+    Typer.print("Extracurriculars/clubs/sports: -" + extracurricularHours
+      + " hrs");
+    Typer.print("Job:                           -" + jobHours + " hrs");
+    Typer.print("--------------------------------");
     Typer
-      .print("Extracurriculars:             -" + extracurricularHours + " hrs");
-    Typer.print("Job:                          -" + jobHours + " hrs");
-    Typer.print("-----------------------------");
-    Typer
-      .print("True free time:                " + getFreeHours() + " hrs/week");
+      .print("Free time remaining:            " + getFreeHours() + " hrs/week");
   }
-
   // --- STANDARD GETTERS AND SETTERS ---
 
   public String getName()
@@ -188,16 +185,6 @@ public class Player
     this.weeklyIncome = weeklyIncome;
   }
 
-  public Job getJob()
-  {
-    return job;
-  }
-
-  public void setJob(Job job)
-  {
-    this.job = job;
-  }
-
   public ClassSchedule getClassSchedule()
   {
     return classSchedule;
@@ -238,6 +225,16 @@ public class Player
     grades = newGrade;
   }
 
+  public Sports getCurrentSport()
+  {
+    return currentSport;
+  }
+
+  public void setCurrentSport(Sports sport)
+  {
+    currentSport = sport;
+  }
+
   public ArrayList<HighSchoolClass> getCompletedClasses()
   {
     return completedClasses;
@@ -269,6 +266,27 @@ public class Player
     return joinedClubs;
   }
 
+  public ArrayList<SummerJob> getSummerJobs()
+  {
+    return summerJobs;
+  }
+
+  public int getSummerJobHours()
+  {
+    return summerJobHours;
+  }
+
+  public void setSummerJobHours(int hours)
+  {
+    summerJobHours = hours;
+  }
+
+  // summer free hours - 91 base minus whatever summer jobs take up
+  public int getSummerFreeHours()
+  {
+    return SummerJob.SUMMER_BASE_FREE_HOURS - summerJobHours;
+  }
+
   // --- RUN OPTION ---
 
   public static void runOption(Player player)
@@ -289,7 +307,6 @@ public class Player
       Grades grades = player.getGrades();
       int age = player.getAge();
       double weeklyIncome = player.getWeeklyIncome();
-      Job job = player.getJob();
       double moneySaved = player.getMoneySaved();
       double weeklyExpenses = player.getWeeklyExpenses();
       double hoursOfSleep = player.getHoursOfSleep();
@@ -315,10 +332,7 @@ public class Player
 
       // Job
       Typer.print("--- EMPLOYMENT ---");
-      if (job == null)
-        Typer.print("Job:                 Unemployed\n");
-      else
-        Typer.print("Job:                 " + job.toString() + "\n");
+      Job.printJobList(player.getJobs());
 
       // Academics
       Typer.print("--- ACADEMICS ---");
